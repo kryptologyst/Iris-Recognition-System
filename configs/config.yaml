@@ -1,0 +1,75 @@
+# Iris Recognition System Configuration
+
+# Model Configuration
+model:
+  name: "gabor_iris_recognizer"
+  input_size: [256, 256]
+  gabor_filters:
+    orientations: 8
+    frequencies: [0.1, 0.2, 0.3, 0.4]
+    kernel_size: 31
+  phase_encoding:
+    enabled: true
+    quantization_levels: 2
+  template_size: 2048
+
+# Training Configuration
+training:
+  batch_size: 32
+  learning_rate: 0.001
+  epochs: 100
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+  validation_split: 0.2
+
+# Data Configuration
+data:
+  train_dir: "data/train"
+  test_dir: "data/test"
+  validation_dir: "data/validation"
+  augmentation:
+    rotation_range: 15
+    brightness_range: 0.2
+    contrast_range: 0.2
+    noise_level: 0.01
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "eer"
+    - "mindcf"
+    - "roc_auc"
+    - "det_curve"
+  thresholds:
+    default: 0.5
+    far_targets: [0.001, 0.01, 0.1]
+  cross_validation:
+    folds: 5
+    stratified: true
+
+# Device Configuration
+device:
+  preferred: "cuda"  # cuda, mps, cpu
+  fallback_order: ["cuda", "mps", "cpu"]
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/iris_recognition.log"
+
+# Privacy Configuration
+privacy:
+  anonymize_samples: true
+  hash_identifiers: true
+  data_retention_days: 30
+  consent_required: true
+
+# Demo Configuration
+demo:
+  streamlit:
+    port: 8501
+    host: "localhost"
+  max_file_size_mb: 10
+  supported_formats: ["jpg", "jpeg", "png", "bmp"]
